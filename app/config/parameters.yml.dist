@@ -8,3 +8,7 @@ parameters:
     # MongoDB
     mongodb.server: "mongodb://localhost:27017"
     mongodb.default_database: "test"
+
+    # Nasa
+    nasa.page: "https://api.nasa.gov/neo/rest/v1/feed"
+    nasa.api_key: N7LkblDsc5aen05FJqBQ8wU4qSdmsftwJagVK7UD
