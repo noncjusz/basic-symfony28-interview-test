@@ -15,6 +15,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
+            new Neo\NasaBundle\NeoNasaBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
