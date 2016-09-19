@@ -15,12 +15,8 @@ class NeoController extends Controller
     public function hazardousAction()
     {
         $result = $this->get('doctrine_mongodb')
-                ->getManager()
-                ->createQueryBuilder('NeoNasaBundle:Asteroid')
-                ->hydrate(false)
-                ->field('is_potentially_hazardous_asteroid')->equals(true)
-                ->getQuery()
-                ->execute();
+            ->getRepository('NeoNasaBundle:Asteroid')
+            ->findHazardous();
 
         return new JsonResponse($result->toArray());
     }
@@ -31,13 +27,8 @@ class NeoController extends Controller
     public function fastestAction()
     {
         $result = $this->get('doctrine_mongodb')
-                ->getManager()
-                ->createQueryBuilder('NeoNasaBundle:Asteroid')
-                ->hydrate(false)
-                ->sort('kilometers_per_hour','desc')
-                ->limit(1)
-                ->getQuery()
-                ->execute();
+            ->getRepository('NeoNasaBundle:Asteroid')
+            ->findFastest();
 
         return new JsonResponse($result->toArray());
     }
