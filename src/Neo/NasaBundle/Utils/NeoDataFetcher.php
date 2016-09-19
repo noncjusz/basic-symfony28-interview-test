@@ -9,13 +9,19 @@ use GuzzleHttp\Client;
 
 class NeoDataFetcher
 {
+    /**
+     *
+     * @var GuzzleHttp\Client
+     */
+    private $client;
     private $startDate;
     private $endDate;
     private $nasaPage;
     private $nasaApiKey;
 
-    public function __construct($nasaPage, $nasaApiKey, $startInterval = "P3D", $endDate = "now")
+    public function __construct(Client $client, $nasaPage, $nasaApiKey, $startInterval = "P3D", $endDate = "now")
     {
+        $this->client = $client;
         $this->nasaPage = $nasaPage;
         $this->nasaApiKey = $nasaApiKey;
 
@@ -28,9 +34,7 @@ class NeoDataFetcher
 
     public function fetchData()
     {
-        $client = new Client();
-
-        $response = $client->get("{$this->nasaPage}?start_date={$this->startDate}&end_date={$this->endDate}&api_key={$this->nasaApiKey}");
+        $response = $this->client->get("{$this->nasaPage}?start_date={$this->startDate}&end_date={$this->endDate}&api_key={$this->nasaApiKey}");
 
         if (!$response) {
             throw new Exception("Missing data from NASA page!");
