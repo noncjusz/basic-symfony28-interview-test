@@ -2,16 +2,12 @@
 
 namespace Neo\NasaBundle\Command;
 
-use DateInterval;
-use DateTime;
-use Exception;
-use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GetDataCommand extends ContainerAwareCommand {
-
+class GetDataCommand extends ContainerAwareCommand
+{
     protected function configure()
     {
         $this
@@ -23,26 +19,9 @@ class GetDataCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $formatter = $this->getHelper('formatter');
+        $fetcher = $this->getContainer()->get('neo_data_fetcher');
 
-        $client = new Client();
-        $dateTime = new DateTime("now");
-
-        $page = $this->getContainer()->getParameter("nasa.page");
-        $apiKey = $this->getContainer()->getParameter("nasa.api_key");
-
-        $startDate = $dateTime->format("Y-m-d");
-
-        $dateTime->sub(new DateInterval("P3D"));
-
-        $endDate = $dateTime->format("Y-m-d");
-
-        $response = $client->get("{$page}?start_date={$startDate}&end_date={$endDate}&api_key={$apiKey}");
-
-        if (!$response) {
-            throw new Exception("Missing data from NASA page!");
-        }
-
-        $results = json_decode($response->getBody(), true);
+        $results = json_decode($fetcher->fetchData(), true);
 
         $em = $this->getContainer()->get('doctrine_mongodb')->getManager();
 

@@ -1,4 +1,8 @@
+parameters:
+    neo_start_interval: "P3D"
+    neo_end_date: "now"
+
 services:
-#    neo_nasa.example:
-#        class: Neo\NasaBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    neo_data_fetcher:
+        class: Neo\NasaBundle\Utils\NeoDataFetcher
+        arguments: ["%nasa.page%", "%nasa.api_key%", "%neo_start_interval%", "%neo_end_date%"]
