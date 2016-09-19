@@ -16,12 +16,14 @@ class GetDataCommand extends ContainerAwareCommand {
     {
         $this
             ->setName('app:get-data')
-            ->setDescription('Gets data from Nasa site.')
+            ->setDescription("Gets data from Nasa site.")
             ->setHelp("By this command you can get data from Nasa site");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $formatter = $this->getHelper('formatter');
+
         $client = new Client();
         $dateTime = new DateTime("now");
 
@@ -59,7 +61,7 @@ class GetDataCommand extends ContainerAwareCommand {
             }
         }
 
-        echo "Element count: {$results['element_count']}";
-        return $results['element_count'];
+        $output->writeln($formatter->formatBlock("Element count: {$results["element_count"]}", 'info'));
+        return;
     }
 }
